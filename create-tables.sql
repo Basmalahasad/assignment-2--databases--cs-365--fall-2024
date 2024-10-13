@@ -6,3 +6,10 @@ CREATE TABLE IF NOT EXISTS user (
     email VARCHAR(128) NOT NULL UNIQUE,
     PRIMARY KEY (user_id)
 );
+
+CREATE TABLE IF NOT EXISTS website (
+    website_id SMALLINT(5) NOT NULL AUTO_INCREMENT,
+    website_name VARCHAR(128) NOT NULL,
+    url VARCHAR(128) NOT NULL UNIQUE,
+    PRIMARY KEY (website_id)
+);
