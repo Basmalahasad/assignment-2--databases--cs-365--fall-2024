@@ -15,9 +15,13 @@ CREATE TABLE IF NOT EXISTS website (
 );
 
 CREATE TABLE IF NOT EXISTS passwords (
-    user_id SMALLINT(5) NOT NULL AUTO_INCREMENT,
+    password_id SMALLINT(5) NOT NULL AUTO_INCREMENT,
+    user_id SMALLINT(5) NOT NULL,
+    website_id SMALLINT(5) NOT NULL,
     password VARBINARY(512) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     comment TEXT,
-    PRIMARY KEY(user_id)
+    PRIMARY KEY(password_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (website_id) REFERENCES website(website_id)
 );
