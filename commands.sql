@@ -74,3 +74,9 @@ DELETE FROM
     website
 WHERE
     url = 'https://github.com';
+
+-- CMD 7: DELETE BASED ON PASSWORD
+DELETE FROM
+    credentials
+WHERE
+    passphrase = AES_ENCRYPT('ml_W6%272dC', @key_str, @init_vector);
