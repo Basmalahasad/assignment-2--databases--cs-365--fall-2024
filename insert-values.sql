@@ -8,7 +8,7 @@ VALUES
 
 INSERT INTO website (website_name, url)
 VALUES
-('U.S. News', 'https://www.usnews.com'),
+('U.S. News', 'http://www.usnews.com'),
 ('Github', 'https://github.com'),
 ('Facebook', 'https://facebook.com'),
 ('The New York Times', 'https://nytimes.com');
