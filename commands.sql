@@ -18,7 +18,7 @@ SELECT
     CAST(AES_DECRYPT(passphrase, @key_str, @init_vector) AS CHAR) AS 'Plain Text Password'
 FROM
     credentials
-JOIN
+INNER JOIN
     website ON credentials.website_id = website.website_id
 WHERE
     url = 'https://github.com';
@@ -29,18 +29,17 @@ SELECT
     website.website_name,
     website.url,
     passphrase,
-    CAST(AES_DECRYPT(passphrase, @key_str, @init_vector) AS CHAR) AS 'Plain Text Password',
     comments,
-    created_at
+    created_at,
+    CAST(AES_DECRYPT(passphrase, @key_str, @init_vector) AS CHAR) AS 'Plain Text Password'
 FROM
     credentials
-JOIN
+INNER JOIN
     website ON credentials.website_id = website.website_id
 WHERE
     url LIKE 'https%'
     AND website.website_id IN (
-        SELECT
-            website_id
+        SELECT website_id
         FROM
             credentials
         GROUP BY
@@ -50,9 +49,17 @@ WHERE
     );
 
 -- CMD 4: UPDATE URL
-UPDATE 
+UPDATE
     website
-SET 
+SET
     url = 'https://newgithub.com'
-WHERE 
+WHERE
     website_name = 'Github';
+
+-- CMD 5: UPDATE PASSWORD
+UPDATE
+    credentials
+SET
+    passphrase = AES_ENCRYPT('newpassword', @key_str, @init_vector)
+WHERE
+    password_id = 3
