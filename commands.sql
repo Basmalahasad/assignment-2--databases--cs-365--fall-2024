@@ -62,4 +62,15 @@ UPDATE
 SET
     passphrase = AES_ENCRYPT('newpassword', @key_str, @init_vector)
 WHERE
-    password_id = 3
+    password_id = 3;
+
+-- CMD 6: DELETE BASED ON URL
+DELETE FROM
+    credentials
+WHERE
+    website_id = (SELECT website_id FROM website WHERE url = 'https://github.com');
+
+DELETE FROM
+    website
+WHERE
+    url = 'https://github.com';
