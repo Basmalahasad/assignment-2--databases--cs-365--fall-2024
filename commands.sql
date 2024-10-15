@@ -48,3 +48,11 @@ WHERE
         HAVING
             COUNT(DISTINCT user_id) = 2
     );
+
+-- CMD 4: UPDATE URL
+UPDATE 
+    website
+SET 
+    url = 'https://newgithub.com'
+WHERE 
+    website_name = 'Github';
