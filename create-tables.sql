@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS user (
     first_name VARCHAR(128) NOT NULL,
     last_name VARCHAR(128) NOT NULL,
     email VARCHAR(128) NOT NULL UNIQUE,
+
     PRIMARY KEY (user_id)
 );
 
@@ -10,6 +11,7 @@ CREATE TABLE IF NOT EXISTS website (
     website_id SMALLINT NOT NULL AUTO_INCREMENT,
     website_name VARCHAR(128) NOT NULL,
     url VARCHAR(128) NOT NULL UNIQUE,
+
     PRIMARY KEY (website_id)
 );
 
@@ -21,7 +23,8 @@ CREATE TABLE IF NOT EXISTS credentials (
     passphrase VARBINARY(512) NOT NULL,
     created_at TIMESTAMP,
     comments TEXT,
+
     PRIMARY KEY (password_id),
-    FOREIGN KEY (user_id) REFERENCES user (user_id),
-    FOREIGN KEY (website_id) REFERENCES website (website_id)
+    FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (website_id) REFERENCES website (website_id) ON DELETE CASCADE
 );

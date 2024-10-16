@@ -1,47 +1,50 @@
 -- CMD1: CREATE A NEW ENTRY
-INSERT INTO user (first_name, last_name, email)
+INSERT INTO user
+(first_name, last_name, email)
 VALUES
 ('Jessie', 'Wilkinson', 'jwilkinson@gmail.com');
 
-INSERT INTO credentials (user_id, website_id, username, passphrase, created_at, comments)
-VALUES
-(6, 3, 'jwilkinson', AES_ENCRYPT('jw_21*3DiUd', @key_str, @init_vector), CURRENT_TIMESTAMP, 'Initial password for Facebook account');
+INSERT INTO credentials
+(user_id, website_id, username, passphrase, created_at, comments)
+VALUES (
+    6,
+    3,
+    'jwilkinson',
+    AES_ENCRYPT('jw_21*3DiUd', @key_str, @init_vector),
+    CURRENT_TIMESTAMP,
+    'Initial password for Facebook account'
+);
 
 -- CMD2: GET PASSWORDS FROM GITHUB URL
-SELECT
-    passphrase,
-    CAST(AES_DECRYPT(passphrase, @key_str, @init_vector) AS CHAR) AS 'Plain Text Password'
-FROM
-    credentials
-INNER JOIN
-    website ON credentials.website_id = website.website_id
-WHERE
-    url = 'https://github.com';
+SELECT CAST(AES_DECRYPT(passphrase, @key_str, @init_vector) AS CHAR) AS 'Plain Text Password'
+FROM credentials INNER JOIN website
+    ON credentials.website_id = website.website_id
+WHERE url = 'https://github.com';
 
 -- CMD3: GET PASSWORD RELATED DATA
 SELECT
-    username,
+    user.email,
     website.website_name,
     website.url,
+    username,
     passphrase,
-    comments,
+    CAST(AES_DECRYPT(passphrase, @key_str, @init_vector) AS CHAR) AS 'Plain Text Password',
     created_at,
-    CAST(AES_DECRYPT(passphrase, @key_str, @init_vector) AS CHAR) AS 'Plain Text Password'
+    comments
 FROM
     credentials
 INNER JOIN
+    user ON credentials.user_id = user.user_id
+INNER JOIN
     website ON credentials.website_id = website.website_id
-WHERE
-    url LIKE 'https%'
-    AND website.website_id IN (
-        SELECT website_id
-        FROM
-            credentials
-        GROUP BY
-            website_id
-        HAVING
-            COUNT(DISTINCT user_id) = 2
-    );
+INNER JOIN (
+    SELECT url
+    FROM website
+    WHERE url LIKE 'https%'
+    LIMIT 2
+)
+    AS selected_urls
+    ON website.url = selected_urls.url;
 
 -- CMD 4: UPDATE URL
 UPDATE
@@ -63,7 +66,11 @@ WHERE
 DELETE FROM
     credentials
 WHERE
-    website_id = (SELECT website_id FROM website WHERE url = 'https://github.com');
+    website_id = (
+        SELECT website_id
+        FROM website
+        WHERE url = 'https://github.com'
+    );
 
 DELETE FROM
     website
