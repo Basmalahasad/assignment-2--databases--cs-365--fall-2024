@@ -63,7 +63,7 @@ VALUES (
     'c_brock',
     AES_ENCRYPT('cb_.02Et9k8', @key_str, @init_vector),
     CURRENT_TIMESTAMP,
-    'N/A'
+    NULL
 ),
 (
     3,
@@ -87,7 +87,7 @@ VALUES (
     'aunderwood',
     AES_ENCRYPT('au_3121_Qbk', @key_str, @init_vector),
     CURRENT_TIMESTAMP,
-    'N/A'
+    NULL
 ),
 (
     5,

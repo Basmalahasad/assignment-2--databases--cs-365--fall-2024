@@ -21,7 +21,7 @@ FROM credentials INNER JOIN website
     ON credentials.website_id = website.website_id
 WHERE url = 'https://github.com';
 
--- CMD3: GET PASSWORD RELATED DATA
+-- CMD3: GET PASSWORD RELATED DATA FROM 2 URLs THAT HAVE HTTPS
 SELECT
     user.email,
     website.website_name,
@@ -46,7 +46,7 @@ INNER JOIN (
     AS selected_urls
     ON website.url = selected_urls.url;
 
--- CMD 4: UPDATE URL
+-- CMD 4: UPDATE URL OF GITHUB TO NEWGITHUB
 UPDATE
     website
 SET
@@ -62,7 +62,7 @@ SET
 WHERE
     password_id = 3;
 
--- CMD 6: DELETE BASED ON URL
+-- CMD 6: DELETE CREDENTIALS BASED ON URL & DELETE THE WEBSITE
 DELETE FROM
     credentials
 WHERE
@@ -77,7 +77,7 @@ DELETE FROM
 WHERE
     url = 'https://github.com';
 
--- CMD 7: DELETE BASED ON PASSWORD
+-- CMD 7: DELETE ONLY CREDENTIALS BASED ON PASSWORD
 DELETE FROM
     credentials
 WHERE
